@@ -15,9 +15,7 @@ async function handleLogin()
   const response = await fetch("http://localhost:3000/login",{
 
     method : 'POST',
-    headers: {
-      'Content-Type':'application/json'
-    },
+    headers: { 'Content-Type':'application/json'},
     body: JSON.stringify({
       username: username.value,
       password: password.value
@@ -28,6 +26,8 @@ async function handleLogin()
 
   if (code == 200)
   {
+    const token = data.token;
+    localStorage.setItem('token', token);
     router.push('/app');
   }
   else

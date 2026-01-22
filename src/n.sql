@@ -54,8 +54,10 @@ CREATE TABLE users_films (
     FOREIGN KEY (id_filmUser) REFERENCES films(id) ON DELETE CASCADE
 );
 
-ALTER TABLE users_films
-ADD CONSTRAINT pk_users_films PRIMARY KEY (id_users, id_filmUser);
+ALTER TABLE genres_films
+ADD CONSTRAINT uq_genres_films UNIQUE (id_genre, id_film);
+
+DELETE  FROM genres_films WHERE id_film = '1' AND id_genre='10'; 
 
 CREATE TABLE genres_films (
     id_film INTEGER NOT NULL,
@@ -83,3 +85,16 @@ WHERE username ='Sirdi';
 SELECT * FROM users
 
 UPDATE users SET passwords = 'Maxime77s' where username = 'Moulouks'
+
+INSERT INTO users (username, email, passwords, date_of_birth) VALUES
+('Sirdi', 'idriss.gallet@gmail.com', 'kiluaestmort', '01/01/2002'),
+('Joland', 'chamsdine.tebiz@hotmail.com', 'motdepasse', '07/09/2002');
+
+INSERT INTO genres (genre_name, description_genre) VALUES
+('Policier', 'Le film policier est un film relevant du genre policier et, par extension, le genre cinématographique qui regroupe de telles œuvres qui mettent en scène le milieu du crime ou de la police. Le film policier est parfois appelé « polar », par dérivation du surnom initialement adopté pour le roman policier.');
+
+INSERT INTO genres_films (id_film, id_genre) VALUES
+(10,8),(10,9);
+
+INSERT INTO users_films (id_users, id_filmuser) VALUES
+(3,1),(3,2),(3,3),(3,4),(3,5),(3,6),(3,7),(3,8),(3,9);

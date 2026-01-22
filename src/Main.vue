@@ -3,6 +3,8 @@ import {onMounted, ref} from 'vue';
 import Commentary from './Commentary.vue';
 import Popup from './popup.vue';
 
+const token =  localStorage.getItem('token');
+
 const movies = ref(["Fight Club", "Weapons", "Parasite", "Superman", "Une bataille après l'autre", "Django"]);
 const User = ref('')
 const newmovie = ref("");
@@ -11,8 +13,10 @@ const indexadelete = ref(null);
 
 onMounted(() => 
 {
-  const storedUser = localStorage.getItem('user');
-  User.value = storedUser;
+  if(!token)
+  {
+    router.push('/');
+  }
 })
 
 function deletemovie(compteur)

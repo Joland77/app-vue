@@ -1,21 +1,16 @@
-const express = require('express'); //express
-const cors = require('cors'); //cors
-const { Pool } = require('pg'); // pour Postgresql
-const jwt = require('jsonwebtoken');
+const express = require('express');
+const cors = require('cors'); 
+const { Pool } = require('pg'); // pour Postgresql (la base de donnée)
+const jwt = require('jsonwebtoken'); // pour le token de connexion que je dois générer
 const app = express();
 const port = 3000;
 console.log("JWT chargé :", jwt !== undefined)
 const db = require('./db');
 
-const USER = [
-    {id : 1, nom : "Chamsdine"},
-    {id : 2, nom : "Antonin"},
-    {id : 3, nom : "Sirdi"},
-]
 
-// Middleware pour traiter les données JSON dans les requêtes POST
+// Transforme les données qu'on recoit en Json
 app.use(express.json());
-// Middleware pour autoriser les requêtes venant d'un autre port (ton frontend)
+// Pour que mon frontend soit connectée
 app.use(cors(
     {
         origin: 'http://localhost:5173'
@@ -65,7 +60,31 @@ app.post('/login', async(req,res) =>
         // Vérifier si le mot de passe correspond à celui stocké
         if (user.passwords === password) {
             // Si le mot de passe est correct
-            return res.status(200).json({ message: 'Connexion réussie' });
+            // Si tout est bon on se connecte donc on créer un token comme suit (fonction pour créer le token)
+            const secretKey = 'ak87djozihdJoland'
+            const CreateToken = (data,secretKey, options = {expiresIn: '1h'}) =>
+            {
+                try {
+                const token = jwt.sign(data, secretKey, options)
+                return token
+              }
+              catch(error){
+                console.log("erreur :", error.message)
+                return null
+              }
+            }
+            // là c'est pour créer un token avec l'id et le username dans "data"
+            const tokenuser = 
+            {
+              id : user.id,
+              username : user.username
+            };
+            const token = CreateToken(tokenuser, secretKey, options);
+
+            return res.status(200).json({ 
+              message: 'Connexion réussie', 
+              token : token,
+            });
         } else {
             // Si le mot de passe est incorrect
             return res.status(401).json({ message: 'Mot de passe incorrect' });

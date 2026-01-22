@@ -4,7 +4,7 @@ const pool = new Pool(
     {
         user:'postgres',
         host:'localhost',
-        database:'appvue',
+        database:'exo_vue',
         password:'Michou13',
         port:'7146',
     });
