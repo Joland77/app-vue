@@ -98,3 +98,12 @@ INSERT INTO genres_films (id_film, id_genre) VALUES
 
 INSERT INTO users_films (id_users, id_filmuser) VALUES
 (3,1),(3,2),(3,3),(3,4),(3,5),(3,6),(3,7),(3,8),(3,9);
+
+SELECT username FROM users WHERE id = 1
+SELECT * FROM users_films WHERE id_users = 1
+
+SELECT  users.id, username, id_users, id_filmuser, title, publication_date, realisateur
+FROM users
+JOIN users_films ON users_films.id_users = users.id
+JOIN films ON users_films.id_filmuser = films.id
+WHERE users.id = 1

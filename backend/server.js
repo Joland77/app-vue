@@ -7,6 +7,8 @@ const port = 3000;
 console.log("JWT chargé :", jwt !== undefined)
 const db = require('./db');
 
+const secretKey = 'ak87djozihdJoland';
+
 
 // Transforme les données qu'on recoit en Json
 app.use(express.json());
@@ -16,6 +18,28 @@ app.use(cors(
         origin: 'http://localhost:5173'
     }
 ));
+
+function authMiddleware(req,res,next )
+{
+    const Authorize = req.headers.authorization; // on stock authorize du header
+    if(!Authorize)
+      {
+        return res.status(401).json({message : "Token manquant"});
+      }
+    const tokenV = Authorize.split(" ")[1]; 
+    // ca c'est pour split bearer et le token vu que c'est Bearer + "" + token on split sur l'espace
+    try
+    {
+      const token = jwt.verify(tokenV, secretKey);
+      req.user = token; 
+      next(); 
+    }
+    catch (error)
+    {
+      return res.status(401).json({message : "echec de la vérification du token"});
+    }
+
+  }
 
 app.get('/users', async(req,res) =>{
 
@@ -61,7 +85,7 @@ app.post('/login', async(req,res) =>
         if (user.passwords === password) {
             // Si le mot de passe est correct
             // Si tout est bon on se connecte donc on créer un token comme suit (fonction pour créer le token)
-            const secretKey = 'ak87djozihdJoland'
+            
             const CreateToken = (data,secretKey, options = {expiresIn: '1h'}) =>
             {
                 try {
@@ -79,7 +103,8 @@ app.post('/login', async(req,res) =>
               id : user.id,
               username : user.username
             };
-            const token = CreateToken(tokenuser, secretKey, options);
+            const token = CreateToken(tokenuser, secretKey);
+            
 
             return res.status(200).json({ 
               message: 'Connexion réussie', 
@@ -96,6 +121,32 @@ app.post('/login', async(req,res) =>
     }
   });
 
+  app.get('/data', authMiddleware, async(req,res) =>
+  {
+    const userid = req.user.id;
+    try
+    {
+      const result = await db.query("SELECT  users.id, username, id_users, id_filmuser, title, publication_date, realisateur FROM users JOIN users_films ON users_films.id_users = users.id JOIN films ON users_films.id_filmuser = films.id WHERE users.id = $1", [userid]);
+      if(result.rows.length === 0)
+        {
+          return res.status(200).json({username : null, movies : []})
+        }
+      const username = result.rows[0].username;
+      const movies = result.rows.map(row => ({
+        id: row.filmuser,
+        title: row.title,
+        date: row.publication_date,
+        realisateur: row.realisateur
+      }));
+
+      return res.status(200).json({username, movies})
+    }
+    catch(error)
+    {
+      res.status(500).json({message : "Récupération info utilisateur impossible"});
+    }
+  }
+  )
 // Lancer le serveur
 app.listen(port, () => {
   console.log(`Serveur backend lancé à http://localhost:${port}`);

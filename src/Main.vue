@@ -5,18 +5,46 @@ import Popup from './popup.vue';
 
 const token =  localStorage.getItem('token');
 
-const movies = ref(["Fight Club", "Weapons", "Parasite", "Superman", "Une bataille après l'autre", "Django"]);
-const User = ref('')
+//const movies = ref(["Fight Club", "Weapons", "Parasite", "Superman", "Une bataille après l'autre", "Django"]);
+const movies = ref([]);
+const User = ref('');
 const newmovie = ref("");
 const showpopup = ref(false);
 const indexadelete = ref(null);
 
-onMounted(() => 
+onMounted( async () => 
 {
   if(!token)
   {
     router.push('/');
   }
+
+  try
+  {
+    const response = await fetch("http://localhost:3000/data",{
+      method:'GET',
+      headers:
+      {
+        Authorization: 'Bearer ' + token,
+      },
+    
+    })
+    const data = await response.json()
+    const moviesU = data.movies;
+  
+    User.value = data.username;
+    let i = 0;
+    for (i=0; i<moviesU.length; i++)
+      {
+       movies.value.push(moviesU[i].title);
+      }  
+  }
+
+  catch(error)
+  {
+    console.log('echec du chargement des données');
+  }
+
 })
 
 function deletemovie(compteur)
@@ -58,6 +86,8 @@ function addmovie()
   </div>
   <div>
     <form id="newfilm" @submit.prevent="addmovie()">
+      <h2>Tu as regardé un nouveau film ?</h2>
+      <h4> Ajoute le !</h4>
       <input type="text" name='nouveaufilm' v-model="newmovie">
       <button >Ajouter</button>
     </form>
@@ -106,7 +136,7 @@ p
 {
  padding-top: 10px;
  padding-bottom: 10px;
- margin: 10px;
+ margin-bottom: 10px;
 
   background-color: rgb(168, 166, 179, 0.8);
   list-style: none;
@@ -115,8 +145,21 @@ p
   width: 1500px;
   height: auto;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
+}
+
+#newfilm > h2 , h4 
+{
+  margin-top: 3px;
+  margin-bottom: 5px;
+  padding: 0;
+ 
+}
+
+#newfilm > button
+{
+  width: 150px;
 }
 
 #Films
