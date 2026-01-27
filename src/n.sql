@@ -107,3 +107,7 @@ FROM users
 JOIN users_films ON users_films.id_users = users.id
 JOIN films ON users_films.id_filmuser = films.id
 WHERE users.id = 1
+
+SELECT username, email FROM users
+
+ALTER TABLE users ADD CONSTRAINT uq_email UNIQUE (email)

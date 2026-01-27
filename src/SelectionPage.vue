@@ -49,7 +49,7 @@ async function handleLogin()
   <div class="inputs">
     <input type="username" placeholder="username" v-model="username"></input>
     <input type="password" placeholder="Mot de passe" v-model="password"></input>
-    <p>Je n'ai pas de compte, je veux <span>m'inscrire</span></p> 
+    <p>Je n'ai pas de compte, je veux <span><a href="/inscription">m'inscrire</a></span></p> 
   </div>
     <button type="submit">Se connecter</button>
   </form>
@@ -80,6 +80,11 @@ async function handleLogin()
 body
 {
   font-family: "Roboto", sans-serif;
+  background-color: rgb(82, 145, 156);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 h1

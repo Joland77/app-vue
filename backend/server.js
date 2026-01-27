@@ -147,6 +147,32 @@ app.post('/login', async(req,res) =>
     }
   }
   )
+
+app.post('/inscription', async(req,res) =>
+  {
+    const email = req.body.email;
+    const username = req.body.username;
+    const password = req.body.password;
+    const dateofbirth = req.body.date_of_birth;
+    let emailcheck = false;
+    let usernamecheck = false;
+    let i = 0;
+try 
+      {
+      const result = await db.query('INSERT INTO users (username, email, passwords, date_of_birth) VALUES ($1,$2,$3,4)', [username,email,password,dateofbirth]);
+      res.status(201).json({message: "Utilisateur inscrit !"})
+      }
+      catch(error)
+      {
+        if(error.constraint === 'uq_email')
+          {
+            
+          }
+
+      }
+    return res.status(200).json({emailcheck,usernamecheck,message:"check terminé"})
+  })
+
 // Lancer le serveur
 app.listen(port, () => {
   console.log(`Serveur backend lancé à http://localhost:${port}`);
