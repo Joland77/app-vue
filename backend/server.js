@@ -129,7 +129,8 @@ app.post('/login', async(req,res) =>
       const result = await db.query("SELECT  users.id, username, id_users, id_filmuser, title, publication_date, realisateur FROM users JOIN users_films ON users_films.id_users = users.id JOIN films ON users_films.id_filmuser = films.id WHERE users.id = $1", [userid]);
       if(result.rows.length === 0)
         {
-          return res.status(200).json({username : null, movies : []})
+          const result2 = await db.query("SELECT username FROM users WHERE users.id =$1", [userid])
+          return res.status(200).json({username : result2.rows[0].username, movies : []})
         }
       const username = result.rows[0].username;
       const movies = result.rows.map(row => ({
@@ -146,7 +147,7 @@ app.post('/login', async(req,res) =>
       res.status(500).json({message : "Récupération info utilisateur impossible"});
     }
   }
-  )
+  );
 
 app.post('/inscription', async(req,res) =>
   {
@@ -159,18 +160,27 @@ app.post('/inscription', async(req,res) =>
     let i = 0;
 try 
       {
-      const result = await db.query('INSERT INTO users (username, email, passwords, date_of_birth) VALUES ($1,$2,$3,4)', [username,email,password,dateofbirth]);
-      res.status(201).json({message: "Utilisateur inscrit !"})
+      const result = await db.query('INSERT INTO users (username, email, passwords, date_of_birth) VALUES ($1,$2,$3,$4);', [username,email,password,dateofbirth]);
+      return res.status(201).json({message: "Utilisateur inscrit !"})
       }
-      catch(error)
+      catch(error)    
       {
-        if(error.constraint === 'uq_email')
+        console.error("erreur lors de l'insertion dans la base de donnée ",error);
+        if(error.code === '23505')
           {
-            
+            if(error.constraint === 'users_email_key')
+            {
+              emailcheck = true;
+              return res.status(400).json({emailcheck,usernamecheck,message:"email déjà utilisé"})
+            }
+            if(error.constraint === 'users_username_key')
+            {
+              usernamecheck = true;
+              return res.status(400).json({emailcheck,usernamecheck,message:"username déjà utilisé"})
+            }
           }
-
+        return res.status(500).json({message : "erreur lors de l'inscription"});
       }
-    return res.status(200).json({emailcheck,usernamecheck,message:"check terminé"})
   })
 
 // Lancer le serveur

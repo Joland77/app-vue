@@ -1,4 +1,4 @@
-<script>
+<script setup>
 import {stringifyQuery, useRouter} from 'vue-router';
 import {ref} from 'vue';
 
@@ -9,19 +9,20 @@ const password1 = ref('');
 const password2 = ref('');
 const birthday = ref('');
 
-async function handlesignin()
+async function handlesign()
 {
-    if(!email.value || !username.value || !password1.value ||!password2.value)
+    if(!email.value || !username.value || !password1.value ||!password2.value || !birthday.value)
     {
         alert("Veuillez remplir tout les champs pour compléter votre inscription");
+        return;
     }
     else if (password1.value != password2.value)
     {
         alert("Les mots de passes doivent correspondre");
+        return;
     }
     else{
-        const response = await fetch('http://localhost:3000/inscription',
-        {
+        const response = await fetch('http://localhost:3000/inscription',{
             method : 'POST',
             headers : {'Content-Type':'application/json'},
             body : JSON.stringify({
@@ -30,34 +31,33 @@ async function handlesignin()
                 password : password1.value,
                 date_of_birth : birthday.value,
             })
-        })
+        });
         const data = await response.json()
-        if(data.emailcheck == true && data.usernamecheck == true)
+        if(response.status === 400)
         {
-            alert("Le pseudo et l'email sont tout deux déjà existant");
+            if(data.emailcheck == true && data.usernamecheck == true)
+            {
+                emailcheck = false;
+                usernamecheck = false;
+                alert("Le pseudo et l'email sont tout deux déjà existant");
+            }
+            else if (data.usernamecheck == true)
+            {
+                alert("Ce pseudo existe déjà, veuillez en choisir un autre");
+            }
+            else if (data.emailcheck == true)
+            {
+                alert("Cet email est déjà utilisé")
+            }
         }
-        else if (data.usernamecheck == true)
+
+        else if (response.status === 500)
         {
-            alert("Ce pseudo existe déjà, veuillez en choisir un autre");
+            alert(data.message);
         }
-        else if (data.emailcheck == true)
+        else if (response.status === 201)
         {
-            alert("Cet email est déjà utilisé")
-        }
-        else
-        {
-            const response2 = await fetch('http://localhost:3000/inscription',{
-                method : 'POST',
-                headers : {'Content-Type':'application/json'},
-                body : JSON.stringify(
-                 {
-                    email : email.value,
-                    username : username.value,
-                    password : password1.value,
-                    date_of_birth : birthday.value
-                 })
-            });
-            router.push('/app');
+            router.push('/');
         }
     }
 }
@@ -81,7 +81,7 @@ async function handlesignin()
 <template>
 <div id="sign">
     <h2>Veuillez vous inscrire :</h2>
-    <form @submit.prevent="handlesignin()">
+    <form @submit.prevent="handlesign()">
         <p>email :</p>
         <input type="email" v-model="email"></input>
         <p>pseudonyme :</p>
