@@ -49,12 +49,11 @@ async function handleLogin()
   <div class="inputs">
     <input type="username" placeholder="username" v-model="username"></input>
     <input type="password" placeholder="Mot de passe" v-model="password"></input>
-    <p>Je n'ai pas de compte, je veux <span><a href="/inscription">m'inscrire</a></span></p> 
+    <p>Je n'ai pas de compte, je veux <span><a id="sign" href="/inscription">m'inscrire</a></span></p> 
   </div>
     <button type="submit">Se connecter</button>
   </form>
 </div>
-
 
 
  <!--
@@ -74,39 +73,33 @@ async function handleLogin()
 </template>
 
 
-<style>
+<style scoped >
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-body
-{
-  font-family: "Roboto", sans-serif;
-  background-color: rgb(82, 145, 156);
-  
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 h1
 {
   font-size: 45px;
+  color: #E5E7EB;
 }
 p
 {
   font-size: 24px;
+  color: #9CA3AF;
 }
 
 .Userselect
 {
-    margin-top: 100px;
+    
     padding: 20px 60px;
 
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: center;
 
     
-    background-color: rgb(157, 190, 199);
+    background-color: #1F2937;
     border-radius: 8px;
     border: solid 3px black;
     width: 500px;
@@ -157,9 +150,10 @@ form p
   font-size: 16px;
 }
 
-.inputs p span
+.inputs p span a
 {
-  color: rgb(14, 111, 255);
+  color: #3B82F6;
+  text-decoration: none;
 }
 
 form button

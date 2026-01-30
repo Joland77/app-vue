@@ -30,4 +30,19 @@ function Newcomment()
   align-items: center;
   justify-content: center;
 }
+
+.comment
+{
+  padding: 12px;
+  background-color: #313f52;
+  border-radius: 2px;
+  font-size: 14px;
+  color: rgb(0, 0, 0);
+  font-family: sans-serif;
+  width: 60%;
+
+  
+  overflow: auto;
+  resize: vertical;
+}
 </style>

@@ -119,3 +119,5 @@ SELECT  users.id, username, id_users, id_filmuser, title, publication_date, real
 SELECT pg_get_serial_sequence('users', 'id');
 
 ALTER SEQUENCE public.users_id_seq RESTART WITH 4
+
+ALTER TABLE users ADD avatars text;

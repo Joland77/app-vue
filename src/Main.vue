@@ -80,11 +80,22 @@ function addmovie()
 </script>
 
 <template>
+  <div id="world">
+  <nav>
+  <h2>Home</h2>
+  <h2>Amis</h2>
+  <h2>Rechercher des films...</h2>
+  <h2>Profile</h2>
+  </nav>
   <div class="Welcome">
-  <h1>Bonjour {{ User }}</h1>
-  <p>Voici tout les films que tu as vu :</p>
+    <div id="avatar">
+    </div>
+    <div id="infos">
+      <h1>Bonjour {{ User }}</h1>
+      <p>Voici tout les films que tu as vu :</p>
+    </div>
   </div>
-  <div>
+  <div id="addmovie">
     <form id="newfilm" @submit.prevent="addmovie()">
       <h2>Tu as regardé un nouveau film ?</h2>
       <h4> Ajoute le !</h4>
@@ -104,10 +115,11 @@ function addmovie()
     <li class="movie-item"v-for="(movie, compteur) in movies" :key="compteur">
       <div class="movieinfo">
         <div class="moviename">{{ movie }}</div>
-        <div class="deletebutton">
+        
+      </div>
+      <div class="deletebutton">
         <button   @click="deletemovie(compteur)" id="delete">Delete</button>
        </div>
-      </div>
       <div>
       <Commentary/>
       </div>
@@ -115,9 +127,41 @@ function addmovie()
   </ul>
   <button id="sort" @click="Sortmovies()">Réorganiser</button>
   </div>
+  </div>
 </template>
 
 <style scoped>
+
+#world
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+nav
+{
+  position: static;
+  
+  top: 0px;
+  left: 5%;
+  margin-top: 20px;
+  width: 80%;
+  height: 50px;
+  background-color: #252C3A;
+  border-radius: 2px;
+  display: flex;
+  align-self: center;
+  gap: 70px;
+}
+
+nav h2
+{
+  margin-left: 20px;
+  color: #E5E7EB;
+}
 
 h1
 {
@@ -132,18 +176,24 @@ p
   font-size: 30px;
   font-family: Times;
 }
+
+#addmovie
+{
+    width: 70%;
+  height: auto;
+}
 #newfilm
 {
  padding-top: 10px;
  padding-bottom: 10px;
  margin-bottom: 10px;
+ flex-direction: column;
 
-  background-color: rgb(168, 166, 179, 0.8);
+  background-color: #1F2937;
   list-style: none;
   border-radius: 15px;
   box-shadow: -14px 8px 16px rgba(0, 0, 0, 0.2);
-  width: 1500px;
-  height: auto;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -151,10 +201,11 @@ p
 
 #newfilm > h2 , h4 
 {
+  
   margin-top: 3px;
   margin-bottom: 5px;
   padding: 0;
- 
+  color: #9CA3AF;
 }
 
 #newfilm > button
@@ -165,11 +216,11 @@ p
 #Films
 {
   padding: 0;
-  background-color: rgb(168, 166, 179, 0.8);
+  background-color: #1F2937;
   list-style: none;
   border-radius: 15px;
   box-shadow: -14px 8px 16px rgba(0, 0, 0, 0.2);
-  width: 1500px;
+  width: 80%;
   height: auto;
 
   display: flex;
@@ -193,14 +244,14 @@ ul
 .movie-item
 {
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 300px 80px 1fr;
   gap: 20px;
 
 
   align-items: center;
   font-size: 20px;
   font-weight: 600;
-  color: rgb(73, 59, 133);
+  color: #60A5FA;
   font-family: 'Inter', sans-serif;
   padding: 10px;
   width: 100%;
@@ -208,26 +259,32 @@ ul
   min-height: 100px;
 }
 
-.comment
-{
-  padding: 12px;
-  background-color: rgb(35, 97, 97);
-  border-radius: 8px;
-  font-size: 14px;
-  color: rgb(0, 0, 0);
-  font-family: sans-serif;
-  width: 60%;
-
-  
-  overflow: auto;
-  resize: vertical;
-}
-
 .Welcome
 {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  align-self: center;
+  width: 60%;
+  height: 400px;
+  margin: 10px;
+  background-color: #1F2937;
+}
+
+.Welcome p, h1
+{
+  color: #E5E7EB;
+}
+
+#avatar
+{
+  width: 300px;
+  height: 300px;
+  border-radius: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-self: center;
+  justify-self: center;
+
+  background-color: #60A5FA;
 }
 
 #sort

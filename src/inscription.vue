@@ -81,15 +81,15 @@ async function handlesign()
 <template>
 <div id="sign">
     <h2>Veuillez vous inscrire :</h2>
-    <form @submit.prevent="handlesign()">
+    <form id="inscriptionblock" @submit.prevent="handlesign()">
         <p>email :</p>
-        <input type="email" v-model="email"></input>
+        <input type="email" placeholder="email" v-model="email"></input>
         <p>pseudonyme :</p>
-        <input type="text" v-model="username"></input>
+        <input type="text" placeholder="pseudo" v-model="username"></input>
         <p>mot de passe :</p>
-        <input type="password" v-model="password1"></input>
+        <input type="password" placeholder="Mot de passe" v-model="password1"></input>
         <p>confirmez le mot de passe :</p>
-        <input type="password" v-model="password2"></input>
+        <input type="password" placeholder="Confirmez votre mot de passe" v-model="password2"></input>
         <p>date de naissance :</p>
         <input type="date" v-model="birthday"></input>
     <button type="submit">Inscription</button>
@@ -97,7 +97,7 @@ async function handlesign()
 </div>
 </template>
 
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 body
@@ -132,4 +132,17 @@ form > p
     padding: 0;
 }
 
+
+#inscriptionblock > input
+{
+    padding: 12px 12px;
+  margin: 10px;
+  margin-bottom: 12px;
+  width: 320px;
+
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  background-color: #e0e0e0;
+}
 </style>
