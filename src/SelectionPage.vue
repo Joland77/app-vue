@@ -41,7 +41,7 @@ async function handleLogin()
 
 <template>
 
-
+<div id="world">
 <div class = "Userselect">
   <form @submit.prevent="handleLogin()">
   <h1> Connexion </h1>
@@ -53,6 +53,7 @@ async function handleLogin()
   </div>
     <button type="submit">Se connecter</button>
   </form>
+</div>
 </div>
 
 
@@ -77,6 +78,16 @@ async function handleLogin()
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 
+#world
+{
+  display: flex;
+  justify-content: center; /* horizontal */
+  align-items: center;     /* vertical */
+
+  width: 100vw;
+  height: 100vh;
+}
+
 h1
 {
   font-size: 45px;
@@ -94,9 +105,7 @@ p
     padding: 20px 60px;
 
     display: flex;
-    align-items: center;
     justify-content: center;
-    align-self: center;
 
     
     background-color: #1F2937;

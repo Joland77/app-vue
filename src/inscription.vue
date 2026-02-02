@@ -79,6 +79,7 @@ async function handlesign()
 </script>
 
 <template>
+<div id="world">
 <div id="sign">
     <h2>Veuillez vous inscrire :</h2>
     <form id="inscriptionblock" @submit.prevent="handlesign()">
@@ -95,15 +96,20 @@ async function handlesign()
     <button type="submit">Inscription</button>
     </form>
 </div>
+</div>
 </template>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-body
+#world
 {
-    background-color: #0D1117;
-    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100vw;
+    height: 100vh;
 }
 #sign
 {

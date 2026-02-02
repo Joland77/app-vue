@@ -2,8 +2,11 @@
 import {onMounted, ref} from 'vue';
 import Commentary from './Commentary.vue';
 import Popup from './popup.vue';
+import Navigateur from './Navigateur.vue';
+import { useRouter } from 'vue-router';
 
 const token =  localStorage.getItem('token');
+const router = useRouter();
 
 //const movies = ref(["Fight Club", "Weapons", "Parasite", "Superman", "Une bataille après l'autre", "Django"]);
 const movies = ref([]);
@@ -81,12 +84,7 @@ function addmovie()
 
 <template>
   <div id="world">
-  <nav>
-  <h2>Home</h2>
-  <h2>Amis</h2>
-  <h2>Rechercher des films...</h2>
-  <h2>Profile</h2>
-  </nav>
+  <Navigateur></Navigateur>
   <div class="Welcome">
     <div id="avatar">
     </div>
@@ -139,28 +137,6 @@ function addmovie()
   justify-content: center;
   align-items: center;
   width: 100%;
-}
-
-nav
-{
-  position: static;
-  
-  top: 0px;
-  left: 5%;
-  margin-top: 20px;
-  width: 80%;
-  height: 50px;
-  background-color: #252C3A;
-  border-radius: 2px;
-  display: flex;
-  align-self: center;
-  gap: 70px;
-}
-
-nav h2
-{
-  margin-left: 20px;
-  color: #E5E7EB;
 }
 
 h1
@@ -267,6 +243,7 @@ ul
   width: 60%;
   height: 400px;
   margin: 10px;
+  margin-top: 90px;
   background-color: #1F2937;
 }
 

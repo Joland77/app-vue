@@ -53,6 +53,7 @@ try{
     }
 })
 
+//Route pour se connecter
 app.post('/login', async(req,res) =>
   {
     
@@ -121,6 +122,7 @@ app.post('/login', async(req,res) =>
     }
   });
 
+//Route pour récuperer infos user
   app.get('/data', authMiddleware, async(req,res) =>
   {
     const userid = req.user.id;
@@ -149,6 +151,7 @@ app.post('/login', async(req,res) =>
   }
   );
 
+// Route pour s'inscrire
 app.post('/inscription', async(req,res) =>
   {
     const email = req.body.email;
@@ -161,6 +164,8 @@ app.post('/inscription', async(req,res) =>
 try 
       {
       const result = await db.query('INSERT INTO users (username, email, passwords, date_of_birth) VALUES ($1,$2,$3,$4);', [username,email,password,dateofbirth]);
+      // const result = userRepository.create(username, password...)
+      // user.Repository.update(infos)
       return res.status(201).json({message: "Utilisateur inscrit !"})
       }
       catch(error)    
@@ -181,6 +186,39 @@ try
           }
         return res.status(500).json({message : "erreur lors de l'inscription"});
       }
+  })
+
+app.get('/films', async(req,res) =>
+  {
+    try
+    {
+      result = await db.query('SELECT * FROM films ORDER BY title');
+      return res.status(200).json(result.rows);
+    }
+    catch(error)
+    {
+      return res.status(500).json({message: "erreur lors du chargement des films"});
+    }
+  })
+
+  app.get('/films/:slug', async(req,res) =>
+  {
+    const slug = req.params.slug
+    try
+    {
+      result = db.query('SELECT * FROM films where slug = $1', [slug]);
+
+      if (result.rows.length === 0)
+        {
+          return res.status(404).json({message : "film non trouvée"});
+        }
+
+      return res.status(200).json(result.rows);
+    }
+    catch(error)
+    {
+      return res.status(500).json({message: "erreur lors du chargement des films"});
+    }
   })
 
 // Lancer le serveur

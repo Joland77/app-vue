@@ -3,6 +3,7 @@ import SelectionPage from './SelectionPage.vue';
 import App from './App.vue';
 import Main from './Main.vue';
 import Inscription from './inscription.vue';
+import filmrecherche from './films.vue';
 
 const routes = [
     {
@@ -19,6 +20,11 @@ const routes = [
         path: '/inscription',
         name: 'Inscription',
         component: Inscription,
+    },
+    {
+        path: '/films',
+        name: 'films',
+        component: filmrecherche,
     }
 ];
 

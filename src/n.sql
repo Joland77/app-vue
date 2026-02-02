@@ -120,4 +120,6 @@ SELECT pg_get_serial_sequence('users', 'id');
 
 ALTER SEQUENCE public.users_id_seq RESTART WITH 4
 
-ALTER TABLE users ADD avatars text;
+UPDATE films SET slug = 'Titanic' WHERE id = 10;
+
+SELECT * FROM films ORDER BY title
