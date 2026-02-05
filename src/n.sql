@@ -114,7 +114,7 @@ ALTER TABLE users ADD CONSTRAINT uq_email UNIQUE (email);
 
 DELETE FROM users WHERE username = 'Roteimo';
 
-SELECT  users.id, username, id_users, id_filmuser, title, publication_date, realisateur FROM users JOIN users_films ON users_films.id_users = users.id JOIN films ON users_films.id_filmuser = films.id WHERE users.id = 17
+SELECT  users.id, username, id_users, id_filmuser, title, publication_date, realisateur FROM users JOIN users_films ON users_films.id_users = users.id JOIN films ON users_films.id_filmuser = films.id WHERE users.id = 1
 
 SELECT pg_get_serial_sequence('users', 'id');
 

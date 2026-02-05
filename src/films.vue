@@ -6,14 +6,17 @@ import Navigateur from './Navigateur.vue';
 const token =  localStorage.getItem('token');
 
 const router = useRouter();
-const filmdatabase = ref([]);
+
+const filmdatabase = ref([]); // toutes les données des films dans la base de données
+const userfilmid = ref([]); // id des films déjà dans la liste de l'utilisateur
+
 const page = ref(1);
 const limit = ref(5);
 
 const totalpages = ref(0);
 const totalfilms = ref(0);
 
-
+const status = ref(false);
 
 const loadfilm = async () => {
 
@@ -30,13 +33,55 @@ const loadfilm = async () => {
 
         totalpages.value = pagination.totalpages;
         totalfilms.value = pagination.totalfilms
-    
+        
     }
     catch(error)
     {
         console.log("erreur", error);
     }
+    
+   
+}
 
+async function userfilms()
+{
+    try 
+    {
+        const response = await fetch("http://localhost:3000/data", 
+        {
+            method: 'GET',
+            headers: 
+            {
+                Authorization : 'Bearer ' + token,
+            }
+        })
+
+        const data = await response.json();
+        userfilmid.value = data.movies.map(movies => movies.id);
+        console.log("userfilmid = ", userfilmid.value)
+        
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+}
+
+function ismovieadded(movieid)
+{
+    return userfilmid.value.includes(movieid);
+}
+
+function handlemovie(movie)
+{
+   if(ismovieadded)
+   {
+    deletemovie(movie);
+   }
+   else
+   {
+    addmovie(movie);
+   }
 }
 
 const addmovie = async (movie) =>
@@ -54,7 +99,6 @@ const addmovie = async (movie) =>
 
             body: JSON.stringify({
                 title : movie.title,
-
             })
         })
         const data = await response.json();
@@ -73,9 +117,33 @@ const addmovie = async (movie) =>
 
 }
 
+const deletemovie = async (movie) =>
+{
+    try
+    {
+        const response = await fetch("http://localhost:3000/deletemovie",
+        {
+            method : 'POST',
+            headers : 
+            {
+                Authorization : 'Bearer ' + token,
+            },
+            body : JSON.stringify(
+                {
+                    movie : movie.title
+                })
+        })
+    }
+    catch(error)
+    {
+        console.log(error);
+    }
+}
+
 onMounted(() =>
 {
     loadfilm();
+    userfilms();
 })
 
 
@@ -151,7 +219,7 @@ function previouspage()
                         <hr id="separateur2">
                         <p>Date de parution : {{ new Date(movie.publication_date).toLocaleDateString('fr-FR') }}</p> 
                         <p>Réalisateur : {{ movie.realisateur }}</p>
-                        <button @click="addmovie(movie)">Ajouter</button>
+                        <button :class="ismovieadded(movie.id) ? 'btn-delete' : 'btn-add'" @click="handlemovie(movie)">{{ ismovieadded(movie.id) ? 'Supprimer' : 'Ajouter' }}</button>
                     </div>
                     </li>
                 </ul>
@@ -289,5 +357,36 @@ function previouspage()
 #separateur2
 {
     width: 100%;
+}
+
+.btn-add
+{
+    border: none;
+    background-color: #3B82F6;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+
+    padding: 8px 14px;
+}
+
+.btn-add:hover
+{
+    background-color: #2563EB;
+}
+
+.btn-delete
+{
+    border: none;
+    background-color: #EF4444;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px 14px;
+}
+
+.btn-delete:hover
+{
+    background-color: #ec3030;
 }
 </style>

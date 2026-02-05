@@ -136,7 +136,7 @@ app.post('/login', async(req,res) =>
         }
       const username = result.rows[0].username;
       const movies = result.rows.map(row => ({
-        id: row.filmuser,
+        id: row.id_filmuser,
         title: row.title,
         date: row.publication_date,
         realisateur: row.realisateur
