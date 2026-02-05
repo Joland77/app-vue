@@ -192,8 +192,28 @@ app.get('/films', async(req,res) =>
   {
     try
     {
-      result = await db.query('SELECT * FROM films ORDER BY title');
-      return res.status(200).json(result.rows);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+
+        const offset = (page - 1) * limit;
+
+        const countfilms = await db.query('SELECT COUNT(*) FROM films');
+        const totalfilms = parseInt(countfilms.rows[0].count);
+
+        const finalfilms = await db.query('SELECT * FROM films LIMIT $1 OFFSET $2', [limit,offset]);
+        const totalpages = Math.ceil(totalfilms/limit);
+
+      return res.status(200).json(
+        {
+          films : finalfilms.rows,
+          pagination : 
+          {
+            currentpage : page,
+            limitpage : limit,
+            totalfilms : totalfilms,
+            totalpages : totalpages,
+          }
+        });
     }
     catch(error)
     {
@@ -201,7 +221,7 @@ app.get('/films', async(req,res) =>
     }
   })
 
-  app.get('/films/:slug', async(req,res) =>
+app.get('/films/:slug', async(req,res) =>
   {
     const slug = req.params.slug
     try
@@ -221,6 +241,55 @@ app.get('/films', async(req,res) =>
     }
   })
 
+  app.post('/addmovie', authMiddleware, async(req,res) => 
+    {
+      const userid = req.user.id;
+      const movietitle = req.body.title;
+
+      console.log("movie title = ", movietitle);
+
+      const movieid = await db.query("SELECT id FROM films WHERE title = $1", [movietitle]);
+
+      const id = movieid.rows[0].id;
+
+      console.log("user id = ", userid);
+      console.log("movie id = ", id);
+
+      try
+      {
+        const response = await db.query("INSERT INTO users_films (id_users, id_filmuser) VALUES ($1,$2)", [userid,id]);
+        return res.status(200).json({message:"film ajouté"})
+      }
+      catch(error)
+      {
+        return res.status(500).json({message:"echec l'ajout du film"})
+      }
+    })
+
+  app.post('/deletemovie', authMiddleware, async(req,res) =>
+    {
+      const userid = req.user.id;
+      const movietitle = req.body.movie;
+
+      const response = await db.query("SELECT id FROM films WHERE title = $1", [movietitle]);
+
+      const movieid = response.rows[0].id;
+
+      try
+      {
+         const response2 = await db.query("DELETE FROM users_films WHERE id_users = $1 AND id_filmuser = $2", [userid,movieid]);
+
+         if(response2.rowCount === 0)
+          {
+            return res.status(404).json({message: "Ce film n'était pas dans votre liste"});
+          }
+         return res.status(200).json({message: "film supprimé de la liste utilisateur"})
+      }
+      catch(error)
+      {
+        return res.status(400).json({message: "erreur lors de la suppression du film"});
+      }
+    })
 // Lancer le serveur
 app.listen(port, () => {
   console.log(`Serveur backend lancé à http://localhost:${port}`);

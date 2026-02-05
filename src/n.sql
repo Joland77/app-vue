@@ -123,3 +123,7 @@ ALTER SEQUENCE public.users_id_seq RESTART WITH 4
 UPDATE films SET slug = 'Titanic' WHERE id = 10;
 
 SELECT * FROM films ORDER BY title
+
+SELECT id FROM films WHERE title = 'Titanic'
+
+DELETE FROM users_films WHERE id_users = 3 AND id_filmuser = 10;

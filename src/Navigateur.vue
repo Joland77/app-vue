@@ -9,11 +9,16 @@ function filmpage()
   router.push("/films")
 }
 
+function homepage()
+{
+  router.push('/app')
+}
+
 </script>
 
 <template>
     <nav>
-  <h2>Home</h2>
+  <h2 v-on:click="homepage()">Home</h2>
   <h2>Amis</h2>
   <h2 v-on:click="filmpage()">Rechercher des films...</h2>
   <h2>Profile</h2>

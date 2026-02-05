@@ -16,8 +16,8 @@ const emit = defineEmits(['actions']);
 <div v-if="props.visible == true" id='popup'>
     <p>Êtes vous sur de vouloir supprimer : {{ movie }}</p>
     <div id="buttons">
-    <button @click="$emit('actions','confirm')">Oui!</button>
-    <button @click="$emit('actions','deny')">Non!</button>
+    <button @click="emit('actions','confirm')">Oui!</button>
+    <button @click="emit('actions','deny')">Non!</button>
     </div>
 </div>
 </template>

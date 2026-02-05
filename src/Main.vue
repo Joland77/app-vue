@@ -41,6 +41,8 @@ onMounted( async () =>
       {
        movies.value.push(moviesU[i].title);
       }  
+
+      console.log(movies)
   }
 
   catch(error)
@@ -55,14 +57,41 @@ function deletemovie(compteur)
   indexadelete.value = compteur;
   showpopup.value = true;
 
+console.log("showpopup vaut : ",  showpopup.value);
+console.log("index à supprimer : ",indexadelete.value);
+console.log("le film : ", movies[indexadelete]);
 }
 
-function popupfinal(reponse)
+async function popupfinal(reponse)
 {
   
-  if (reponse == 'confirm' && indexadelete != null)
+  if (reponse === 'confirm' && indexadelete.value != null)
   {
-    movies.value.splice(indexadelete.value, 1);
+    const movietitle = movies.value[indexadelete.value]
+    try
+    {
+      const responsefetch = await fetch("http://localhost:3000/deletemovie",
+      {
+        method : "POST",
+        headers :
+         {
+           'Content-type' : 'application/JSON',
+           Authorization : 'Bearer ' + token,
+          },
+        body: JSON.stringify(
+        {
+          movie : movietitle,
+        })
+    
+      })
+      const data = await responsefetch.json();
+      movies.value.splice(indexadelete.value, 1);
+      console.log(data.message);
+    }
+    catch(error)
+    {
+      console.log(error);
+    }
   }
 
   showpopup.value = false;
@@ -109,11 +138,13 @@ function addmovie()
   >
 </Popup>
   <div id = "Films">
+    <div v-if="!movies"><h2>Commence dès maintenant à remplir ta liste de films visionnée et nous donner ton avis</h2> 
+    <a href="/films"><p> Tout de suite !</p></a>
+    </div>
   <ul>
     <li class="movie-item"v-for="(movie, compteur) in movies" :key="compteur">
       <div class="movieinfo">
         <div class="moviename">{{ movie }}</div>
-        
       </div>
       <div class="deletebutton">
         <button   @click="deletemovie(compteur)" id="delete">Delete</button>
