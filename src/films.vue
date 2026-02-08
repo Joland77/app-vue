@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, watch} from 'vue';
+import {ref, onMounted, watch, computed} from 'vue';
 import { useRouter } from 'vue-router';
 import Navigateur from './Navigateur.vue';
 
@@ -43,6 +43,7 @@ const loadfilm = async () => {
    
 }
 
+//pour savoir quelles films sont déjà ajoutés par l'user
 async function userfilms()
 {
     try 
@@ -74,7 +75,7 @@ function ismovieadded(movieid)
 
 function handlemovie(movie)
 {
-   if(ismovieadded)
+   if(ismovieadded(movie.id))
    {
     deletemovie(movie);
    }
@@ -105,6 +106,9 @@ const addmovie = async (movie) =>
         const code = response.status;
 
          if(code == 200)
+         {
+            userfilmid.value.push(movie.id);
+         }
     {
       console.log(data.message);  
     }
@@ -126,6 +130,7 @@ const deletemovie = async (movie) =>
             method : 'POST',
             headers : 
             {
+                'Content-type' : 'application/json',
                 Authorization : 'Bearer ' + token,
             },
             body : JSON.stringify(
@@ -133,6 +138,15 @@ const deletemovie = async (movie) =>
                     movie : movie.title
                 })
         })
+
+        const data = await response.json();
+        const code = response.status;
+
+         if(code == 200)
+         {
+            userfilmid.value = userfilmid.value.filter(id => id !== movie.id);
+            //reconstruire le tableau sans le film qu'on a supprimé en gros
+         }
     }
     catch(error)
     {
