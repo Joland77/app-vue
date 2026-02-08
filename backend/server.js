@@ -158,12 +158,13 @@ app.post('/inscription', async(req,res) =>
     const username = req.body.username;
     const password = req.body.password;
     const dateofbirth = req.body.date_of_birth;
+    const datecreation = new Date();
     let emailcheck = false;
     let usernamecheck = false;
     let i = 0;
 try 
       {
-      const result = await db.query('INSERT INTO users (username, email, passwords, date_of_birth) VALUES ($1,$2,$3,$4);', [username,email,password,dateofbirth]);
+      const result = await db.query('INSERT INTO users (username, email, passwords, date_of_birth, account_creation) VALUES ($1,$2,$3,$4,$5);', [username,email,password,dateofbirth,datecreation]);
       // const result = userRepository.create(username, password...)
       // user.Repository.update(infos)
       return res.status(201).json({message: "Utilisateur inscrit !"})

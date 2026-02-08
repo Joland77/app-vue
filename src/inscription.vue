@@ -9,8 +9,12 @@ const password1 = ref('');
 const password2 = ref('');
 const birthday = ref('');
 
+const today = new Date();
+
 async function handlesign()
 {
+    const birthdate = new Date(birthday.value);
+
     if(!email.value || !username.value || !password1.value ||!password2.value || !birthday.value)
     {
         alert("Veuillez remplir tout les champs pour compléter votre inscription");
@@ -20,6 +24,11 @@ async function handlesign()
     {
         alert("Les mots de passes doivent correspondre");
         return;
+    }
+    else if (birthdate > today)
+    {
+        alert("la date de naissance dépasse la date d'aujourd'hui");
+        return
     }
     else{
         const response = await fetch('http://localhost:3000/inscription',{

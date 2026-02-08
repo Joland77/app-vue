@@ -112,7 +112,7 @@ SELECT username, email FROM users
 
 ALTER TABLE users ADD CONSTRAINT uq_email UNIQUE (email);
 
-DELETE FROM users WHERE username = 'Roteimo';
+DELETE FROM users WHERE username = 'HommeBonhomme';
 
 SELECT  users.id, username, id_users, id_filmuser, title, publication_date, realisateur FROM users JOIN users_films ON users_films.id_users = users.id JOIN films ON users_films.id_filmuser = films.id WHERE users.id = 1
 

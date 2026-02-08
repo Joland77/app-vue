@@ -138,7 +138,7 @@ function addmovie()
   >
 </Popup>
   <div id = "Films">
-    <div v-if="!movies"><h2>Commence dès maintenant à remplir ta liste de films visionnée et nous donner ton avis</h2> 
+    <div v-if="movies.value == null"><h2>Commence dès maintenant à remplir ta liste de films visionnée et nous donner ton avis</h2> 
     <a href="/films"><p> Tout de suite !</p></a>
     </div>
   <ul>
