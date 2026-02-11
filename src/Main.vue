@@ -3,12 +3,12 @@ import {onMounted, ref} from 'vue';
 import Commentary from './Commentary.vue';
 import Popup from './popup.vue';
 import Navigateur from './Navigateur.vue';
+import Search from './search.vue';
 import { useRouter } from 'vue-router';
 
 const token =  localStorage.getItem('token');
 const router = useRouter();
 
-//const movies = ref(["Fight Club", "Weapons", "Parasite", "Superman", "Une bataille après l'autre", "Django"]);
 const movies = ref([]);
 const User = ref('');
 const newmovie = ref("");
@@ -122,14 +122,8 @@ function addmovie()
       <p>Voici tout les films que tu as vu :</p>
     </div>
   </div>
-  <div id="addmovie">
-    <form id="newfilm" @submit.prevent="addmovie()">
-      <h2>Tu as regardé un nouveau film ?</h2>
-      <h4> Ajoute le !</h4>
-      <input type="text" name='nouveaufilm' v-model="newmovie">
-      <button >Ajouter</button>
-    </form>
-  </div>
+  <Search></Search>
+
   <Popup 
   :visible = "showpopup" 
   :index="indexadelete" 
@@ -138,7 +132,7 @@ function addmovie()
   >
 </Popup>
   <div id = "Films">
-    <div v-if="movies.value == null"><h2>Commence dès maintenant à remplir ta liste de films visionnée et nous donner ton avis</h2> 
+    <div v-if="movies.value === null"><h2>Commence dès maintenant à remplir ta liste de films visionnée et nous donner ton avis</h2> 
     <a href="/films"><p> Tout de suite !</p></a>
     </div>
   <ul>
@@ -182,42 +176,6 @@ p
   left: 0px;
   font-size: 30px;
   font-family: Times;
-}
-
-#addmovie
-{
-    width: 70%;
-  height: auto;
-}
-#newfilm
-{
- padding-top: 10px;
- padding-bottom: 10px;
- margin-bottom: 10px;
- flex-direction: column;
-
-  background-color: #1F2937;
-  list-style: none;
-  border-radius: 15px;
-  box-shadow: -14px 8px 16px rgba(0, 0, 0, 0.2);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#newfilm > h2 , h4 
-{
-  
-  margin-top: 3px;
-  margin-bottom: 5px;
-  padding: 0;
-  color: #9CA3AF;
-}
-
-#newfilm > button
-{
-  width: 150px;
 }
 
 #Films

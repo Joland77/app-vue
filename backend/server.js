@@ -9,7 +9,6 @@ const db = require('./db');
 
 const secretKey = 'ak87djozihdJoland';
 
-
 // Transforme les données qu'on recoit en Json
 app.use(express.json());
 // Pour que mon frontend soit connectée
@@ -187,6 +186,28 @@ try
           }
         return res.status(500).json({message : "erreur lors de l'inscription"});
       }
+  })
+
+app.get('/films/search', async(req,res) =>
+  {
+    
+    const searching = req.query.q;
+
+    if (!searching || searching.length < 2)
+      {
+        return res.status(200).json([]);
+      }
+    
+    try
+    {
+      const response = await db.query("SELECT id, title, publication_date, realisateur, slug, synopsis FROM films WHERE LOWER (title) LIKE LOWER ($1) LIMIT 10", [`%${searching}%`]);
+      const data = response.rows;
+      return res.status(200).json(data);
+    }
+    catch(error)
+    {
+      return res.status(500).json({message : "erreur de la recherche"});
+    }
   })
 
 app.get('/films', async(req,res) =>

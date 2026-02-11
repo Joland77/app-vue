@@ -127,3 +127,9 @@ SELECT * FROM films ORDER BY title
 SELECT id FROM films WHERE title = 'Titanic'
 
 DELETE FROM users_films WHERE id_users = 3 AND id_filmuser = 10;
+
+ALTER TABLE films ADD synopsis TEXT;
+
+UPDATE films
+SET synopsis = 'Southampton, 10 avril 1912. Le paquebot le plus grand et le plus moderne du monde, réputé pour son insubmersibilité, le "Titanic", appareille pour son premier voyage. Quatre jours plus tard, il heurte un iceberg. A son bord, un artiste pauvre et une grande bourgeoise tombent amoureux.'
+WHERE id = 10;
