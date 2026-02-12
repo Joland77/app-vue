@@ -222,7 +222,7 @@ app.get('/films', async(req,res) =>
         const countfilms = await db.query('SELECT COUNT(*) FROM films');
         const totalfilms = parseInt(countfilms.rows[0].count);
 
-        const finalfilms = await db.query('SELECT * FROM films LIMIT $1 OFFSET $2', [limit,offset]);
+        const finalfilms = await db.query('SELECT * FROM films ORDER BY title LIMIT $1 OFFSET $2 ', [limit,offset]);
         const totalpages = Math.ceil(totalfilms/limit);
 
       return res.status(200).json(
@@ -246,9 +246,12 @@ app.get('/films', async(req,res) =>
 app.get('/films/:slug', async(req,res) =>
   {
     const slug = req.params.slug
+    console.log("le slug = ", slug);
     try
     {
-      result = db.query('SELECT * FROM films where slug = $1', [slug]);
+      const result = await db.query('SELECT * FROM films WHERE slug = $1', [slug]);
+
+      console.log("résultat = ", result.rows)
 
       if (result.rows.length === 0)
         {

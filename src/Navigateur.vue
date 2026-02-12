@@ -36,7 +36,7 @@ nav
   margin-top: 20px;
   width: 80%;
   height: 50px;
-  background-color: #252C3A;
+  background-color: var(--bg-secondary);
   border-radius: 2px;
   display: flex;
   gap: 70px;
@@ -45,7 +45,7 @@ nav
 nav h2
 {
   margin-left: 20px;
-  color: #E5E7EB;
+  color: var(--text-primary);
 }
 
 nav h2:hover

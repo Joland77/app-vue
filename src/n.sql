@@ -133,3 +133,11 @@ ALTER TABLE films ADD synopsis TEXT;
 UPDATE films
 SET synopsis = 'Southampton, 10 avril 1912. Le paquebot le plus grand et le plus moderne du monde, réputé pour son insubmersibilité, le "Titanic", appareille pour son premier voyage. Quatre jours plus tard, il heurte un iceberg. A son bord, un artiste pauvre et une grande bourgeoise tombent amoureux.'
 WHERE id = 10;
+
+INSERT INTO films (title, publication_date, realisateur, slug, synopsis)
+VALUES ('John Wick Parabellum', '22/05/2019', 'Chad Stahelski', 'Johnwick3', 'John Wick a transgressé une règle fondamentale : il a tué à l''intérieur même de l''Hôtel Continental. "Excommunié", tous les services liés au Continental lui sont fermés et sa tête mise à prix. John se retrouve sans soutien, traqué par tous les plus dangereux tueurs du monde.');
+
+INSERT INTO genres_films (id_film, id_genre)
+VALUES (11,3),(11,10),(12,3),(12,10),(13,3),(13,10);
+
+SELECT * FROM films where slug = 'Django'

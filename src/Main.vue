@@ -181,7 +181,7 @@ p
 #Films
 {
   padding: 0;
-  background-color: #1F2937;
+  background-color: var(--bg-secondary);
   list-style: none;
   border-radius: 15px;
   box-shadow: -14px 8px 16px rgba(0, 0, 0, 0.2);
@@ -216,7 +216,7 @@ ul
   align-items: center;
   font-size: 20px;
   font-weight: 600;
-  color: #60A5FA;
+  color: var(--movie-title);
   font-family: 'Inter', sans-serif;
   padding: 10px;
   width: 100%;
@@ -233,12 +233,17 @@ ul
   height: 400px;
   margin: 10px;
   margin-top: 90px;
-  background-color: #1F2937;
+  background-color: var(--bg-card);;
 }
 
-.Welcome p, h1
+.Welcome h1
 {
-  color: #E5E7EB;
+  color: var(--text-primary);
+}
+
+.Welcome p
+{
+  color: var(--text-secondary);
 }
 
 #avatar
@@ -250,7 +255,7 @@ ul
   align-self: center;
   justify-self: center;
 
-  background-color: #60A5FA;
+  background-color: var(--bg-hover);
 }
 
 #sort

@@ -4,6 +4,7 @@ import App from './App.vue';
 import Main from './Main.vue';
 import Inscription from './inscription.vue';
 import filmrecherche from './films.vue';
+import Filmsdetail from './filmsdetail.vue';
 
 const routes = [
     {
@@ -25,6 +26,11 @@ const routes = [
         path: '/films',
         name: 'films',
         component: filmrecherche,
+    },
+    {
+        path: '/films/:slug',
+        name: 'Filmdetail',
+        component: Filmsdetail,
     }
 ];
 
