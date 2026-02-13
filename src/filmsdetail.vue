@@ -35,10 +35,17 @@ onMounted(async () =>
     <div id="world">
         <Navigateur></Navigateur>
         <div id="data" v-if="movie">
-            {{ movie.title }}
-            {{ movie.realisateur }}
-            {{ new Date(movie.publication_date).toLocaleDateString('fr-FR') }}
-            {{ movie.synopsis }}
+            <div class="filmtitle">
+                <h1>{{ movie.title }}</h1>
+                <div class="filmAffiche"></div>
+            </div>
+            <div class="filminfos">
+                <h1>Note : </h1>
+                <hr>
+                <h2>{{ movie.realisateur }}</h2>
+                <h4>{{ new Date(movie.publication_date).toLocaleDateString('fr-FR') }}</h4>
+                <p>{{ movie.synopsis }}</p>
+            </div>
         </div>
     </div>
 </template>
@@ -53,13 +60,46 @@ onMounted(async () =>
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  
 }
 
 #data
 {
+    display: flex;
+    justify-content: flex-start;
+    flex-shrink: 0;
     margin-top: 100px;
     width: 1600px;
     height: 600px;
     background-color: var(--bg-secondary);
+}
+
+.filmtitle
+{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 400px;
+  margin: 10px;
+  padding: 10px;
+  background-color: var(--bg-secondary);
+  color: var(--movie-title);
+}
+
+.filmAffiche
+{
+    width: 100%;
+    height: 90%;
+    background-color:var(--bg-elevated);
+}
+
+.filminfos
+{
+    
+    margin-left: 10px;
+    padding: 30px;
+    width: 60%;
 }
 </style>

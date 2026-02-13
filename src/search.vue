@@ -1,45 +1,45 @@
 <script setup>
 import {ref, watch} from 'vue';
-import { useRouter } from 'vue-router';
+import { useFilms } from './fonctions';
 
-const router = useRouter();
+const {GoToFilm} = useFilms()
 
 const searching = ref('');
 const searchresult = ref([]);
 
-async function searchmovies()
-{
+    async function searchmovies()
+    {
 
     if(searching.value.length < 2)
     {
         searchresult.value = [];
         return
     }
+        try
+        {
+        const response = await fetch(`http://localhost:3000/films/search?q=${searching.value}`,
+            {
+            method : 'GET',
+            headers : {'Content-Type' : 'application/json'}
+            })
+        const data = await response.json();
+        searchresult.value = data
 
-  try
-  {
-    const response = await fetch(`http://localhost:3000/films/search?q=${searching.value}`,
-    {
-      method : 'GET',
-      headers : {'Content-Type' : 'application/json'}
-    })
-    const data = await response.json();
-    searchresult.value = data
+        console.log("data récupéré = ", data);
+        }
+        catch(error)
+        {
+        console.log('erreur :', error);
+        }
+    }
 
-    console.log("data récupéré = ", data);
-  }
-  catch(error)
-  {
-    console.log('erreur :', error);
-  }
-}
-
+/*
 async function pushfilm(movie)
 {
   const slug = movie.slug;
 
   router.push(`/films/${slug}`)
-}
+}*/
 
 watch(searching, () =>
 {
@@ -56,7 +56,7 @@ watch(searching, () =>
       <input type="text" name='searchfilm' v-model="searching">
       <div id="searchtab" v-if="searchresult.length > 0" >
         <ul>
-            <li @click="pushfilm(movie)" class="moviecard" v-for="movie in searchresult">
+            <li @click="GoToFilm(movie)" class="moviecard" v-for="movie in searchresult">
 
                 <div class="filmtitle">
                   {{ movie.title }}
@@ -72,7 +72,6 @@ watch(searching, () =>
             </li>
         </ul>
       </div>
-      <button @click="addmovie()">Ajouter</button>
     </form>
   </div>
 </template>

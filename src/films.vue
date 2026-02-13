@@ -2,10 +2,12 @@
 import {ref, onMounted, watch, computed} from 'vue';
 import { useRouter } from 'vue-router';
 import Navigateur from './Navigateur.vue';
+import {useFilms} from './fonctions';
 
 const token =  localStorage.getItem('token');
 
 const router = useRouter();
+const {GoToFilm} = useFilms();
 
 const filmdatabase = ref([]); // toutes les données des films dans la base de données
 const userfilmid = ref([]); // id des films déjà dans la liste de l'utilisateur
@@ -223,7 +225,7 @@ function previouspage()
                 </div>
                 <ul class="movieselection">
                     <li class="moviecard" v-for="movie in filmdatabase" :key="movie.id">
-                    <div class="filmtitle">
+                    <div class="filmtitle" @click="GoToFilm(movie)">
                         <h2>{{ movie.title }}</h2>
                         <div class="filmAffiche"></div>
                     </div>
@@ -342,6 +344,7 @@ function previouspage()
     min-height: 480px;
     background-color: #1F2937;
     color: #FBBF24;
+    cursor: pointer;
 }
 .filmtitle h2
 {
