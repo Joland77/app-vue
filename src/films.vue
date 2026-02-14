@@ -7,7 +7,7 @@ import {useFilms} from './fonctions';
 const token =  localStorage.getItem('token');
 
 const router = useRouter();
-const {GoToFilm} = useFilms();
+const {GoToFilm, addmovie, deletemovie} = useFilms();
 
 const filmdatabase = ref([]); // toutes les données des films dans la base de données
 const userfilmid = ref([]); // id des films déjà dans la liste de l'utilisateur
@@ -70,23 +70,24 @@ async function userfilms()
     }
 }
 
-function ismovieadded(movieid)
-{
-    return userfilmid.value.includes(movieid);
-}
-
 function handlemovie(movie)
 {
    if(ismovieadded(movie.id))
    {
-    deletemovie(movie);
+    deletemovie(movie, userfilmid);
    }
    else
    {
-    addmovie(movie);
+    addmovie(movie, userfilmid);
    }
 }
 
+
+function ismovieadded(movieid)
+{
+    return userfilmid.value.includes(movieid);
+}
+/*
 const addmovie = async (movie) =>
 {
     try
@@ -122,7 +123,6 @@ const addmovie = async (movie) =>
     }
 
 }
-
 const deletemovie = async (movie) =>
 {
     try
@@ -155,7 +155,7 @@ const deletemovie = async (movie) =>
         console.log(error);
     }
 }
-
+*/
 onMounted(() =>
 {
     loadfilm();
